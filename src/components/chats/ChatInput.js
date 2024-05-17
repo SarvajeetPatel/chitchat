@@ -13,7 +13,8 @@ function ChatInput({ message, sendMessage, setMessage }) {
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyDown={(e) => (e.key === 'Enter') ? sendMessage() : null}
                 />
-                <button className='btn btn-info' onClick={() => sendMessage()}> SEND </button>
+                {message &&
+                    <button clasName='btn btn-info' onClick={() => sendMessage()}> SEND </button>}
             </div>
         </div>
     )

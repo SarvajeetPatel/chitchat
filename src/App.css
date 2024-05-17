@@ -32,9 +32,16 @@
   height: 95vh !important;
 }
 
-/* .chat-height {
-  height: calc(100% - 20vh) !important;
-} */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-block {
+  margin-top: 20px;
+  padding: 5px !important;
+  height: fit-content;
+}
 
 .chat-message-left {
   margin-right: auto;

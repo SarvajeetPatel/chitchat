@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import LoginNewUser from "./LoginNewUser"
 import Chat from "./chats/Chat"
 
@@ -6,8 +6,9 @@ function HomePage({ socket }) {
     const [newUser, setNewUser] = useState('')
     const [message, setMessage] = useState('')
     const [allMessages, setAllMessages] = useState([])
-    // const [allUsers, setAllUsers] = useState([])
     const [signedUser, setSignedUser] = useState({})
+    const lastMessage = useRef(null)
+    const [loggedOutUser, setLoggedOutUser] = useState('')
 
     useEffect(() => {
         socket.on('users', (users) => {
@@ -17,7 +18,6 @@ function HomePage({ socket }) {
                 curr_message.push(newMessage)
             }
             setAllMessages([...allMessages, ...curr_message])
-            // setAllUsers(users)
         })
 
         socket.on('session', ({ userId, username }) => {
@@ -35,6 +35,10 @@ function HomePage({ socket }) {
         })
 
     }, [socket, allMessages])
+
+    useEffect(() => {
+        lastMessage.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [allMessages])
 
     const logNewUser = () => {
         setSignedUser(newUser)
@@ -55,11 +59,15 @@ function HomePage({ socket }) {
                 <div className="container mt-3">
                     {signedUser.userId && (
                         <Chat
+                            lastMessage={lastMessage}
                             signedUser={signedUser}
                             message={message}
                             sendMessage={sendMessage}
                             allMessages={allMessages}
                             setMessage={setMessage}
+                            setSignedUser={setSignedUser}
+                            loggedOutUser={loggedOutUser}
+                            setLoggedOutUser={setLoggedOutUser}
                         />
                     )}
                     {!signedUser.userId &&
